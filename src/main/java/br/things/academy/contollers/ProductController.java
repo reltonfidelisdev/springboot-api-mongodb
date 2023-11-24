@@ -22,40 +22,43 @@ public class ProductController {
 	@Autowired 
 	ProductRepository repo;
 	Product product;
-	@GetMapping // its ok
+	@GetMapping
 	public List<Product> findAll() {
 		List<Product> result = repo.findAll();
 		return result;
 		
 	}
 	
-	@GetMapping("/{id}") // its ok
+	@GetMapping("/{id}")
 	public Product findById(@PathVariable String id) {
 		Product result = repo.findById(id).get();
 		return result;
 	}
 	
 	
-	@PostMapping // its ok
+	@PostMapping
 	public Product insert(@RequestBody Product product) {
 		Product result = repo.save(product);
 		return result;
 	}
 	
-	@PutMapping // its ok
+	@PutMapping
 	public Product update(@RequestBody Product product) {
 		Product result = repo.save(product);
 		return result;
 	}
 	
+	@SuppressWarnings("finally")
 	@DeleteMapping
-	public Product remove(@RequestBody Product product) {
+	public Product remove(@RequestBody Product product){
+		Product haveProduct = findById(product.getId());
+		
 		try {
-			repo.delete(product);
+			repo.delete(haveProduct);
 		} catch (Exception e) {
-			System.err.println("Exception:");
-			System.err.println(e.getMessage() + " : \n" + e.getClass());
+			System.err.println("Erro!" + e.getMessage());
+		}finally{
+			return haveProduct;
 		}
-		return product;
 	}
 }

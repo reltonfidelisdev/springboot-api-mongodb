@@ -35,7 +35,6 @@ public class ProductController {
 		return result;
 	}
 	
-	
 	@PostMapping
 	public Product insert(@RequestBody Product product) {
 		Product result = repo.save(product);
